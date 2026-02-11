@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Upload · Encrypted Cloud{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-7">
+    <div class="card p-4 card-file">
+      <h5 class="mb-3">Upload & Encrypt</h5>
+      <form method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+          <label class="form-label">Choose file</label>
+          <input type="file" name="file" class="form-control" required>
+        </div>
+        <div class="d-flex gap-2">
+          <button class="btn btn-primary" type="submit"><i class="bi bi-cloud-upload"></i> Upload & Encrypt</button>
+          <a class="btn btn-outline-secondary" href="{{ url_for('dashboard') }}">Cancel</a>
+        </div>
+      </form>
+      <div class="small-muted mt-3">Files are encrypted server-side with a per-file key (Fernet/AES).</div>
+    </div>
+  </div>
+</div>
+{% endblock %}

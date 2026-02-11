@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Admin · Encrypted Cloud{% endblock %}
+{% block content %}
+<h4 class="mb-3">Admin — All Files</h4>
+
+<div class="card p-3 card-file">
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead>
+        <tr>
+          <th>Filename</th>
+          <th>Owner</th>
+          <th>Uploaded</th>
+          <th>Shared With</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for f in files %}
+          <tr>
+            <td>{{ f.original_filename }}</td>
+            <td>{{ f.owner.username }}</td>
+            <td class="small-muted">{{ f.uploaded_at.strftime('%Y-%m-%d %H:%M') }}</td>
+            <td>
+              {% if f.file_keys %}
+                {% for fk in f.file_keys %}
+                  <span class="badge bg-light text-dark me-1">{{ fk.user.username }}</span>
+                {% endfor %}
+              {% else %}
+                <span class="small-muted">—</span>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

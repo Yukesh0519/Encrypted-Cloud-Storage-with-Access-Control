@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Dashboard · Encrypted Cloud{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h4>Your Files</h4>
+  <a class="btn btn-outline-secondary" href="{{ url_for('upload') }}"><i class="bi bi-cloud-upload"></i> Upload</a>
+</div>
+
+{% if owned_files %}
+  <div class="row g-3">
+    {% for f in owned_files %}
+    <div class="col-md-6 col-lg-4">
+      <div class="card p-3 card-file h-100">
+        <div class="d-flex justify-content-between">
+          <div>
+            <h6 class="mb-1 text-truncate" style="max-width:220px;">{{ f.original_filename }}</h6>
+            <div class="small-muted">Owner · You</div>
+            <div class="small-muted">Uploaded {{ f.uploaded_at.strftime('%Y-%m-%d %H:%M') }}</div>
+          </div>
+          <div class="text-end">
+            <a class="btn btn-sm btn-outline-primary mb-2" href="{{ url_for('file_view', file_id=f.id) }}"><i class="bi bi-eye"></i></a>
+            <form method="post" action="{{ url_for('delete', file_id=f.id) }}" onsubmit="return confirm('Delete this file?');">
+              <button class="btn btn-sm btn-danger" type="submit"><i class="bi bi-trash"></i></button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="card p-4 card-file">
+    <p class="mb-0">You haven't uploaded any files yet. <a href="{{ url_for('upload') }}">Upload one now</a>.</p>
+  </div>
+{% endif %}
+
+<hr class="my-4">
+
+<h5>Files Shared With You</h5>
+{% if shared_files %}
+  <div class="row g-3 mt-2">
+    {% for f in shared_files %}
+      <div class="col-md-6 col-lg-4">
+        <div class="card p-3 card-file">
+          <div class="d-flex justify-content-between">
+            <div>
+              <h6 class="mb-1">{{ f.original_filename }}</h6>
+              <div class="small-muted">Owner: {{ f.owner.username }}</div>
+            </div>
+            <div class="text-end">
+              <a class="btn btn-sm btn-primary mb-1" href="{{ url_for('download', file_id=f.id) }}"><i class="bi bi-download"></i></a>
+              <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('file_view', file_id=f.id) }}"><i class="bi bi-info-circle"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <p class="small-muted">No files have been shared with you.</p>
+{% endif %}
+{% endblock %}
